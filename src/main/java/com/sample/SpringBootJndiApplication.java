@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ContextResource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -16,6 +17,18 @@ import org.springframework.jndi.JndiObjectFactoryBean;
 
 @SpringBootApplication
 public class SpringBootJndiApplication {
+    
+    @Value("${jndi.driverClassName}")
+    private String driverClassName;
+    
+    @Value("${jndi.url}")
+    private String url;
+    
+    @Value("${jndi.username}")
+    private String username;
+    
+    @Value("${jndi.password}")
+    private String password;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootJndiApplication.class, args);
@@ -36,10 +49,10 @@ public class SpringBootJndiApplication {
                 ContextResource resource = new ContextResource();
                 resource.setName("jdbc/test");
                 resource.setType(DataSource.class.getName());
-                resource.setProperty("driverClassName", "org.h2.Driver");
-                resource.setProperty("url", "jdbc:h2:file:~/test");
-                resource.setProperty("username", "sa");
-                resource.setProperty("password", "");
+                resource.setProperty("driverClassName", driverClassName);
+                resource.setProperty("url", url);
+                resource.setProperty("username", username);
+                resource.setProperty("password", password);
                 context.getNamingResources().addResource(resource);
             }
     
