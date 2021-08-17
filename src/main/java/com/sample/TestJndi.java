@@ -1,4 +1,4 @@
-package com.jjc;
+package com.sample;
 
 import java.util.List;
 import java.util.Map;
