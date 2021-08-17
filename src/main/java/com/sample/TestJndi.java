@@ -21,7 +21,7 @@ public class TestJndi {
     public void test() {
         List<Map<String, Object>> users = jdbcTemplate.queryForList("select * from t_user");
         users.forEach(user -> {
-            System.out.println(user.get("name"));
+            System.out.println(user.get("name") + " | " + user.get("create_datetime"));
         });
     }
 }

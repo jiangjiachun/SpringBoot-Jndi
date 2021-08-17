@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jndi.JndiObjectFactoryBean;
 
 @SpringBootApplication
@@ -21,6 +22,7 @@ public class SpringBootJndiApplication {
 	}
 	
     @Bean
+    @Profile("dev")
     public TomcatServletWebServerFactory tomcatFactory() {
         return new TomcatServletWebServerFactory() {
             @Override
@@ -34,10 +36,10 @@ public class SpringBootJndiApplication {
                 ContextResource resource = new ContextResource();
                 resource.setName("jdbc/test");
                 resource.setType(DataSource.class.getName());
-                resource.setProperty("driverClassName", "com.mysql.cj.jdbc.Driver");
-                resource.setProperty("url", "jdbc:mysql://127.0.0.1:3306/test");
-                resource.setProperty("username", "root");
-                resource.setProperty("password", "123456");
+                resource.setProperty("driverClassName", "org.h2.Driver");
+                resource.setProperty("url", "jdbc:h2:file:~/test");
+                resource.setProperty("username", "sa");
+                resource.setProperty("password", "");
                 context.getNamingResources().addResource(resource);
             }
     
@@ -45,6 +47,7 @@ public class SpringBootJndiApplication {
     }
     
     @Bean(destroyMethod="")
+    @Profile("dev")
     public DataSource jndiDataSource() throws IllegalArgumentException, NamingException {
         JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
         bean.setJndiName("java:comp/env/jdbc/test");
